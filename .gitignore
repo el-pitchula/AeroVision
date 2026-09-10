@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Datasets
+data/raw/
+data/processed/
+data/train/
+data/val/
+data/test/
+
+# Model weights
+models/*.pt
+models/*.pth
+models/*.onnx
+*.weights
+
+# Training outputs
+runs/
+wandb/
+mlruns/
+
+# Results generated automatically
+results/tmp/
+
+# Videos
+videos/*.mp4
+videos/*.avi
+videos/*.mov
+videos/*.mkv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets
+.env
