@@ -1,189 +1,148 @@
 # AeroVision
 
-### Sistema de Percepção Visual para Detecção, Segmentação e Rastreamento de Objetos em Imagens Aéreas
+### Sistema de Percepção Visual para Detecção e Segmentação de Objetos em Imagens Aéreas
 
-> **AeroVision** is a computer vision system designed to provide visual perception capabilities for UAVs through object detection, instance segmentation and multi-object tracking.
+[![Python](https://img.shields.io/badge/Python-3.x-blue)]()
+[![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-orange)]()
+[![YOLO](https://img.shields.io/badge/YOLO-Ultralytics-green)]()
+[![License](https://img.shields.io/badge/Code-MIT-lightgrey)]()
 
 ---
 
 ## Visão geral
 
-O **AeroVision** é um projeto de visão computacional voltado à interpretação de imagens e vídeos obtidos por veículos aéreos não tripulados (UAVs).
+**AeroVision** é um sistema de visão computacional desenvolvido para a percepção de objetos em imagens aéreas obtidas por veículos aéreos não tripulados (UAVs).
 
-O sistema tem como objetivo investigar uma cadeia de percepção visual composta por:
+O projeto investiga uma cadeia de processamento composta por:
 
 ```text
-Imagem / Vídeo UAV
-        │
-        ▼
+Imagem aérea
+     │
+     ▼
 Pré-processamento
-        │
-        ▼
-Detecção de Objetos
-        │
-        ▼
-Segmentação de Instâncias
-        │
-        ▼
-Rastreamento
-        │
-        ▼
-Informações sobre o Ambiente
+     │
+     ▼
+Detecção de objetos
+     │
+     ▼
+Segmentação de instâncias
+     │
+     ▼
+Avaliação
+     │
+     ▼
+Inferência em vídeo
+     │
+     ▼
+Tracking (extensão)
 ```
 
-A proposta é desenvolver um módulo de percepção que possa futuramente ser integrado a outros sistemas embarcados de estimação de estado e controle, contribuindo para uma arquitetura de **UAV autônomo**.
+O sistema foi desenvolvido no contexto da disciplina de **Visão Computacional e Reconhecimento de Padrões**, com foco na aplicação prática de técnicas modernas de Deep Learning para percepção visual.
 
 ---
 
-## Objetivos
+# Objetivo
 
-### Objetivo geral
+## Objetivo geral
 
-Desenvolver e avaliar um sistema de visão computacional capaz de detectar, segmentar e rastrear objetos presentes em imagens aéreas obtidas por UAVs.
+Desenvolver e avaliar um sistema de visão computacional capaz de detectar e segmentar veículos em imagens aéreas obtidas por UAVs.
 
-### Objetivos específicos
+## Objetivos específicos
 
-* realizar análise exploratória de um dataset de imagens aéreas;
-* preparar e padronizar os dados para treinamento;
-* desenvolver um modelo de detecção de objetos;
+* analisar exploratoriamente um dataset de imagens aéreas;
+* preparar os dados para treinamento;
+* desenvolver um modelo de detecção baseado em YOLO;
 * desenvolver um modelo de segmentação de instâncias;
-* comparar o desempenho das tarefas de detecção e segmentação;
-* avaliar os modelos utilizando métricas quantitativas;
-* realizar análise qualitativa de erros;
-* testar os modelos em imagens não utilizadas durante o treinamento;
+* avaliar quantitativamente os modelos;
+* analisar erros de detecção e segmentação;
+* realizar inferência em imagens não utilizadas no treinamento;
 * realizar inferência em vídeo;
-* investigar rastreamento de múltiplos objetos;
-* estruturar o sistema como um módulo reutilizável de percepção visual para UAVs.
+* investigar rastreamento de múltiplos objetos como extensão do sistema.
 
 ---
 
-## Arquitetura conceitual
+# Dataset
 
-O AeroVision foi concebido como um dos módulos de uma arquitetura maior de sistemas autônomos:
+O projeto utiliza o dataset **Drone-Traffic**, disponibilizado através do Roboflow Universe.
 
-```text
-                         SISTEMA AUTÔNOMO UAV
-                                  │
-                    ┌─────────────┴─────────────┐
-                    │                           │
-                    ▼                           ▼
-              ESTADO INERCIAL              PERCEPÇÃO
-                    │                           │
-                 IMU / INS                  CÂMERA
-                    │                           │
-                    ▼                           ▼
-               GyroAI-SAT                  AeroVision
-                    │                           │
-                    │                    ┌──────┴──────┐
-                    │                    │             │
-                    │                 Detecção    Segmentação
-                    │                    │             │
-                    │                    └──────┬──────┘
-                    │                           │
-                    │                       Tracking
-                    │                           │
-                    └──────────────┬────────────┘
-                                   ▼
-                            FUSÃO SENSORIAL
-                                   │
-                                   ▼
-                             ESTADO DO UAV
-                                   │
-                                   ▼
-                           TOMADA DE DECISÃO
-                                   │
-                                   ▼
-                            CONTROLE AUTÔNOMO
-```
+O dataset contém:
 
-A integração com sistemas inerciais e de controle não faz parte do escopo inicial do projeto acadêmico. Ela representa uma possibilidade de evolução futura da pesquisa.
+* **1.332 imagens**;
+* **4 classes**;
+* anotações para **instance segmentation**;
+* imagens de cenas de tráfego capturadas por drones.
+
+### Classes
+
+| ID | Classe  |
+| -: | ------- |
+|  0 | bicycle |
+|  1 | bus     |
+|  2 | car     |
+|  3 | lorry   |
+
+### Fonte
+
+**Drone-Traffic Dataset — kaggleMTID**
+
+Roboflow Universe:
+
+https://universe.roboflow.com/kagglemtid/drone-traffic
+
+### Licença
+
+CC BY 4.0.
+
+A fonte original e os termos de utilização do dataset serão mantidos na documentação do projeto.
 
 ---
 
-## Pipeline de visão computacional
+# Metodologia
 
-O pipeline experimental será organizado em etapas:
+O pipeline experimental será dividido em cinco etapas principais:
 
 ```text
 Dataset
    │
    ▼
-Exploratory Data Analysis
+EDA
    │
    ▼
-Preprocessing
+Detection
    │
    ▼
-Train / Validation / Test
+Segmentation
    │
-   ├───────────────┐
-   ▼               ▼
-Detection      Segmentation
-   │               │
-   └───────┬───────┘
-           ▼
-       Evaluation
-           │
-           ▼
-      Error Analysis
-           │
-           ▼
-     Video Inference
-           │
-           ▼
-        Tracking
+   ▼
+Evaluation
+   │
+   ▼
+Video Inference
 ```
 
 ---
 
-## Tecnologias
+## 1. Exploratory Data Analysis
 
-O projeto será desenvolvido principalmente utilizando:
+Inicialmente serão investigados:
 
-* Python
-* PyTorch
-* Ultralytics YOLO
-* OpenCV
-* NumPy
-* Pandas
-* Matplotlib
-* Scikit-learn
-* Google Colab / GPU
-
-A arquitetura final de modelos será definida após a análise do dataset e dos requisitos experimentais.
+* quantidade de imagens;
+* distribuição das classes;
+* quantidade de objetos por imagem;
+* resolução das imagens;
+* distribuição das bounding boxes;
+* distribuição das máscaras;
+* possíveis desbalanceamentos;
+* imagens representativas;
+* possíveis problemas nas anotações.
 
 ---
 
-## Dataset
+## 2. Detecção
 
-O dataset definitivo ainda será selecionado durante a etapa inicial do projeto.
+A primeira etapa de Deep Learning será a detecção dos objetos.
 
-Os principais critérios de seleção serão:
-
-* imagens obtidas por UAV;
-* pelo menos 300 imagens anotadas;
-* classes adequadas ao problema;
-* disponibilidade de bounding boxes;
-* disponibilidade de máscaras para segmentação;
-* possibilidade de utilização acadêmica;
-* documentação e origem verificáveis;
-* divisão adequada entre treinamento, validação e teste.
-
-Entre as fontes investigadas encontram-se datasets de visão aérea como **VisDrone** e **UVSD**.
-
-O VisDrone fornece imagens e vídeos capturados por drones, com anotações para detecção e rastreamento. O dataset possui 10.209 imagens estáticas e 288 vídeos, totalizando 261.908 frames.
-
-O UVSD é um dataset voltado especificamente para detecção e segmentação de veículos em imagens de UAV, contendo 5.874 imagens e 98.600 instâncias com anotações em nível de instância. Seu acesso é destinado a pesquisa e estudo privado mediante solicitação institucional.
-
-O dataset final somente será definido após a verificação de disponibilidade, formato das anotações e condições de uso.
-
----
-
-## Detecção
-
-A primeira tarefa será a detecção de objetos.
-
-O modelo será treinado para produzir:
+O modelo deverá produzir:
 
 ```text
 classe
@@ -191,121 +150,171 @@ confiança
 bounding box
 ```
 
-Exemplo conceitual:
-
-```text
-Object #17
-
-Class: car
-Confidence: 0.94
-BBox: (x1, y1, x2, y2)
-```
-
-A avaliação utilizará, entre outras métricas:
-
-* Precision
-* Recall
-* mAP@0.5
-* mAP@0.5:0.95
-* matriz de confusão
-
----
-
-## Segmentação
-
-A segunda etapa será a segmentação de instâncias.
-
-Diferentemente da detecção, que representa o objeto por uma bounding box, a segmentação deverá identificar os pixels pertencentes a cada instância.
-
 Exemplo:
 
 ```text
-Imagem
-   │
-   ▼
-Objeto detectado
-   │
-   ▼
-Máscara da instância
+Class: car
+Confidence: 0.91
+
+Bounding Box:
+x1, y1, x2, y2
 ```
 
-As métricas incluirão IoU e métricas apropriadas ao modelo de segmentação.
+A implementação será realizada utilizando modelos da família YOLO através do framework Ultralytics.
 
 ---
 
-## Rastreamento
+## 3. Segmentação
 
-Como extensão do sistema, será investigado o rastreamento de múltiplos objetos em vídeo.
+Na segunda tarefa será utilizada segmentação de instâncias.
 
-A ideia é associar uma identidade persistente às detecções:
+Para cada objeto detectado, o modelo deverá produzir:
 
 ```text
-Frame 001       Frame 002       Frame 003
-
-CAR #17   ───►  CAR #17   ───►  CAR #17
-CAR #23   ───►  CAR #23   ───►  CAR #23
+classe
+confiança
+bounding box
+máscara
 ```
 
-Uma possível abordagem será o **ByteTrack**, dependendo do desempenho e da compatibilidade com o detector selecionado.
+A segmentação permite representar a forma aproximada de cada objeto, indo além da representação retangular utilizada na detecção.
 
 ---
 
-## Avaliação
+# Avaliação
 
-A avaliação será dividida em:
+## Detecção
 
-### Avaliação quantitativa
+Serão avaliadas:
 
-* mAP@0.5
-* mAP@0.5:0.95
-* Precision
-* Recall
-* IoU
-* matriz de confusão
+* Precision;
+* Recall;
+* mAP@0.5;
+* mAP@0.5:0.95;
+* matriz de confusão.
 
-### Avaliação qualitativa
+## Segmentação
 
-Serão analisados casos de:
+Serão avaliadas:
+
+* IoU;
+* métricas de máscara disponibilizadas pelo modelo;
+* qualidade visual das máscaras;
+* comparação entre previsão e ground truth.
+
+---
+
+# Análise de erros
+
+Será realizada análise qualitativa dos resultados, buscando identificar:
 
 * falsos positivos;
 * falsos negativos;
 * objetos pequenos;
 * objetos parcialmente ocultos;
-* baixa resolução;
-* mudanças de iluminação;
-* alta densidade de objetos;
+* sobreposição entre veículos;
 * confusão entre classes;
-* falhas de segmentação.
+* baixa qualidade de segmentação;
+* falhas em regiões densamente povoadas.
+
+A análise qualitativa será utilizada para complementar as métricas quantitativas.
 
 ---
 
-## Inferência em vídeo
+# Inferência em vídeo
 
-O sistema será testado em vídeos contendo cenas aéreas.
+Após a validação dos modelos, será realizada inferência sobre um vídeo contendo uma cena compatível com o domínio do projeto.
 
-A etapa deverá demonstrar:
+O objetivo é demonstrar o comportamento do modelo fora do conjunto de treinamento.
+
+O vídeo final terá duração mínima de **30 segundos**, conforme os requisitos da atividade.
+
+---
+
+# Tracking
+
+Como extensão do projeto, será investigada a utilização de um algoritmo de rastreamento de múltiplos objetos, como **ByteTrack**.
+
+A ideia é transformar:
 
 ```text
-Vídeo
-  │
-  ▼
-Detecção
-  │
-  ▼
-Segmentação
-  │
-  ▼
-Tracking
-  │
-  ▼
-Vídeo anotado
+Frame 1
+CAR
 ```
 
-O vídeo final deverá representar um cenário próximo da aplicação pretendida.
+em:
+
+```text
+Frame 1 → CAR #01
+Frame 2 → CAR #01
+Frame 3 → CAR #01
+Frame 4 → CAR #01
+```
+
+O tracking será tratado como uma extensão/bônus e não comprometerá a entrega das tarefas principais.
 
 ---
 
-## Estrutura do projeto
+# Arquitetura conceitual
+
+O AeroVision representa o módulo de percepção visual de uma arquitetura maior de UAV autônomo:
+
+```text
+                         SISTEMA AUTÔNOMO UAV
+                                  │
+                    ┌─────────────┴─────────────┐
+                    │                           │
+                    ▼                           ▼
+              ESTADO INERCIAL               PERCEPÇÃO
+                    │                           │
+                   IMU                        CÂMERA
+                    │                           │
+                    ▼                           ▼
+               GyroAI-SAT                  AeroVision
+                                                │
+                                      ┌─────────┴─────────┐
+                                      │                   │
+                                      ▼                   ▼
+                                  Detecção          Segmentação
+                                      │                   │
+                                      └─────────┬─────────┘
+                                                ▼
+                                             Tracking
+                                                │
+                                                ▼
+                                        Percepção do ambiente
+                                                │
+                         ┌──────────────────────┘
+                         ▼
+                   Fusão Sensorial
+                         │
+                         ▼
+                   Estado do UAV
+                         │
+                         ▼
+                  Sistema Autônomo
+```
+
+A integração entre AeroVision e GyroAI-SAT **não faz parte do escopo desta entrega**. Ela representa uma possível evolução futura do projeto.
+
+---
+
+# Tecnologias
+
+* Python
+* PyTorch
+* Ultralytics
+* YOLO
+* OpenCV
+* NumPy
+* Pandas
+* Matplotlib
+* Scikit-learn
+* Google Colab
+
+---
+
+# Estrutura do projeto
 
 ```text
 AeroVision/
@@ -328,7 +337,7 @@ AeroVision/
 │   ├── 02_detection.ipynb
 │   ├── 03_segmentation.ipynb
 │   ├── 04_evaluation.ipynb
-│   └── 05_video_inference.ipynb
+│   └── 05_video_tracking.ipynb
 │
 ├── src/
 │   ├── preprocessing/
@@ -338,100 +347,54 @@ AeroVision/
 │   └── evaluation/
 │
 ├── configs/
-│
 ├── models/
-│
 ├── results/
-│   ├── detection/
-│   ├── segmentation/
-│   ├── tracking/
-│   ├── confusion_matrix/
-│   └── error_analysis/
-│
 └── videos/
 ```
 
 ---
 
-## Relação com outros projetos
-
-O AeroVision faz parte de uma linha de desenvolvimento voltada a sistemas inteligentes aplicados ao setor aeroespacial.
-
-### GyroAI-SAT
-
-Sistema de inteligência artificial relacionado à estimação e monitoramento de atitude e à detecção de condições associadas ao gimbal lock.
-
-### AeroVision
-
-Módulo de percepção visual responsável por interpretar o ambiente externo através de câmeras.
-
-### Futuro Sistema Autônomo UAV
-
-A integração dos dois conceitos poderá futuramente resultar em uma arquitetura multimodal:
-
-```text
-              ┌───────────────┐
-              │     UAV       │
-              └───────┬───────┘
-                      │
-            ┌─────────┴─────────┐
-            ▼                   ▼
-          Sensores            Câmera
-            │                   │
-            ▼                   ▼
-       GyroAI-SAT          AeroVision
-            │                   │
-            └─────────┬─────────┘
-                      ▼
-                Sensor Fusion
-                      │
-                      ▼
-                Estado do UAV
-                      │
-                      ▼
-              Autonomous System
-```
-
-Essa integração é uma direção futura e não representa o escopo obrigatório da versão acadêmica atual.
-
----
-
-## Status
+# Status
 
 🚧 **Em desenvolvimento**
 
-### Fase atual
+### Progresso
 
-* [x] Definição conceitual
-* [x] Definição do domínio: visão aérea / UAV
-* [x] Arquitetura inicial
-* [ ] Seleção definitiva do dataset
-* [ ] Análise exploratória dos dados
-* [ ] Pipeline de preprocessing
-* [ ] Treinamento do detector
-* [ ] Treinamento do segmentador
+* [x] Definição do problema
+* [x] Definição do domínio
+* [x] Seleção do dataset
+* [x] Definição das classes
+* [x] Definição da arquitetura
+* [ ] Download/exportação do dataset
+* [ ] EDA
+* [ ] Preparação dos dados
+* [ ] Treinamento da detecção
+* [ ] Treinamento da segmentação
 * [ ] Avaliação
 * [ ] Análise de erros
 * [ ] Inferência em vídeo
-* [ ] Rastreamento
-* [ ] Documentação final
+* [ ] Tracking
+* [ ] Relatório
+* [ ] Apresentação
 
 ---
 
-## Contexto acadêmico
+# Contexto acadêmico
 
-Projeto desenvolvido no contexto da disciplina de **Visão Computacional e Reconhecimento de Padrões**, como aplicação prática de técnicas de detecção, segmentação e interpretação de imagens.
+Projeto desenvolvido para a disciplina de **Visão Computacional e Reconhecimento de Padrões**.
 
-O projeto também serve como etapa experimental para uma linha de pesquisa pessoal envolvendo:
+O projeto também integra uma linha de desenvolvimento pessoal envolvendo:
 
-**Inteligência Artificial + Visão Computacional + Sistemas de Controle + Aeroespacial + Sistemas Autônomos.**
+**Inteligência Artificial + Visão Computacional + Controle + Aeroespacial + Sistemas Autônomos.**
 
 ---
 
-## Referências
+# Referências
 
-As referências completas dos datasets, artigos, modelos e ferramentas utilizados serão mantidas em:
+As fontes utilizadas, artigos, datasets, frameworks e modelos serão documentados em:
 
 ```text
 docs/references.md
 ```
+
+Todos os recursos de terceiros utilizados no projeto serão devidamente identificados e citados.
