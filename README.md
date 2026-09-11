@@ -356,7 +356,7 @@ AeroVision/
 
 # Status
 
-🚧 **Em desenvolvimento**
+**Em desenvolvimento**
 
 ### Progresso
 
@@ -375,7 +375,6 @@ AeroVision/
 * [ ] Inferência em vídeo
 * [ ] Tracking
 * [ ] Relatório
-* [ ] Apresentação
 
 ---
 
