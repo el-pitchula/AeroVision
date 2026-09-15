@@ -1,0 +1,11 @@
+path: ../data/processed/drone_traffic_detection
+
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: bicycle
+  1: bus
+  2: car
+  3: lorry
