@@ -1,0 +1,4 @@
+split,images,annotations
+train,950,14229
+valid,251,3839
+test,118,1697
