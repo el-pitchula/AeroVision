@@ -397,3 +397,30 @@ docs/references.md
 ```
 
 Todos os recursos de terceiros utilizados no projeto serão devidamente identificados e citados.
+
+---
+
+# Obrigatório
+✓ Drone-Traffic
+✓ 1.332 imagens
+✓ 4 classes
+✓ Detecção
+✓ Segmentação
+✓ mAP@0.5
+✓ mAP@0.5:0.95
+✓ Precision
+✓ Recall
+✓ IoU
+✓ Matriz de confusão
+✓ FP/FN
+✓ Análise qualitativa
+✓ Vídeo ≥30 s
+
+Se houver tempo
+○ ByteTrack
+○ Tracking
+○ Demo interativa
+
+# Data
+### dataset -> Download -> Download dataset -> COCO Segmentation -> Download zip to computer 
+https://universe.roboflow.com/kagglemtid/drone-traffic
