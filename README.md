@@ -187,8 +187,7 @@ flowchart LR
 ```
 
 > [!IMPORTANT]
-
-> A detecção e a segmentação foram treinadas com **configurações diferentes** (resolução, épocas e pesos iniciais). Diferenças entre as métricas de caixa dos dois modelos **não** devem ser atribuídas apenas à tarefa. Como as imagens têm 416 × 416, treinar a segmentação a 640 px implica ampliar as imagens (**upsampling**).
+A detecção e a segmentação foram treinadas com **configurações diferentes** (resolução, épocas e pesos iniciais). Diferenças entre as métricas de caixa dos dois modelos **não** devem ser atribuídas apenas à tarefa. Como as imagens têm 416 × 416, treinar a segmentação a 640 px implica ampliar as imagens (**upsampling**).
 
 ---
 
@@ -313,8 +312,7 @@ flowchart TD
 </div>
 
 > [!WARNING]
-
-> Estas matrizes foram geradas na **validação** (as colunas somam 226, 249, 2.501 e 863 instâncias), não no teste. Não são diretamente comparáveis com as métricas por classe da seção anterior.
+Estas matrizes foram geradas na **validação** (as colunas somam 226, 249, 2.501 e 863 instâncias), não no teste. Não são diretamente comparáveis com as métricas por classe da seção anterior.
 
 | Classe | Instâncias | Det. FN | Det. FP | Seg. FN | Seg. FP |
 | --- | ---: | ---: | ---: | ---: | ---: |
