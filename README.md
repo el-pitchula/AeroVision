@@ -24,15 +24,16 @@
 ---
 
 ## Em resumo
+<div align="center">
 | Detecção<br>mAP@0.5 | Segmentação<br>mAP@0.5 (máscaras) | mAP@0.5:0.95<br>caixas · máscaras | Classe mais difícil |
 | :---: | :---: | :---: | :---: |
 | **0,947** | **0,981** | **0,760** · **0,725** | `bicycle` |
+</div>
 
 O **AeroVision** detecta e segmenta veículos (`bicycle`, `bus`, `car`, `lorry`) em imagens aéreas de tráfego capturadas por drone. Dois modelos da família **YOLO11** (Ultralytics) foram ajustados sobre o dataset público **Drone-Traffic**, avaliados em um conjunto de teste separado e aplicados a um vídeo real.
 
 > [!NOTE]
-
-> Todas as imagens do dataset vêm de **uma única cena** (câmera fixa sobre um cruzamento). Os números acima descrevem o desempenho **nessa cena**, não em qualquer imagem aérea. Veja [Limitações](#limitacoes).
+Todas as imagens do dataset vêm de **uma única cena** (câmera fixa sobre um cruzamento). Os números acima descrevem o desempenho **nessa cena**, não em qualquer imagem aérea. Veja [Limitações](#limitacoes).
 
 ---
 
