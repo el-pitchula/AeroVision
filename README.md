@@ -46,7 +46,6 @@ Todas as imagens do dataset vêm de **uma única cena** (câmera fixa sobre um c
 
 | Recurso | Link |
 | --- | --- |
-| Vídeo-pitch (5 a 8 min) | **[PREENCHER: link]** |
 | Vídeo com a inferência | **[PREENCHER: link]** |
 | Relatório técnico | [`docs/report.pdf`](docs/report.pdf) |
 
