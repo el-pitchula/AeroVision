@@ -5,42 +5,27 @@
 <br>
 
 [![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-
 [![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
-
 [![Ultralytics YOLO11](https://img.shields.io/badge/Ultralytics-YOLO11-111F68)](https://docs.ultralytics.com/)
-
 [![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?logo=opencv&logoColor=white)](https://opencv.org/)
-
 [![Código: MIT](https://img.shields.io/badge/c%C3%B3digo-MIT-lightgrey)](LICENSE)
-
 [![Dataset: CC BY 4.0](https://img.shields.io/badge/dataset-CC%20BY%204.0-lightblue)](https://universe.roboflow.com/kagglemtid/drone-traffic)
-
 [![Status](https://img.shields.io/badge/status-projeto%20acad%C3%AAmico-informational)](#-sobre-o-projeto)
-
 **Pós-graduação · Visão Computacional e Reconhecimento de Padrões**
 
 [Resultados](#resultados) ·
-
 [Análise de erros](#analise-de-erros) ·
-
 [Vídeo](#video) ·
-
 [Como reproduzir](#reproduzir) ·
-
 [Limitações](#limitacoes) ·
-
 [Roadmap](#roadmap)
-
 </div>
 
 ---
 
 ## Em resumo
 | Detecção<br>mAP@0.5 | Segmentação<br>mAP@0.5 (máscaras) | mAP@0.5:0.95<br>caixas · máscaras | Classe mais difícil |
-
 | :---: | :---: | :---: | :---: |
-
 | **0,947** | **0,981** | **0,760** · **0,725** | `bicycle` |
 
 O **AeroVision** detecta e segmenta veículos (`bicycle`, `bus`, `car`, `lorry`) em imagens aéreas de tráfego capturadas por drone. Dois modelos da família **YOLO11** (Ultralytics) foram ajustados sobre o dataset público **Drone-Traffic**, avaliados em um conjunto de teste separado e aplicados a um vídeo real.
@@ -61,13 +46,9 @@ O **AeroVision** detecta e segmenta veículos (`bicycle`, `bus`, `car`, `lorry`)
 <!-- substitir assets/demo.gif pelo GIF real: python scripts/make_demo_gif.py --video <video> --out assets/demo.gif -->
 
 | Recurso | Link |
-
 | --- | --- |
-
 | Vídeo-pitch (5 a 8 min) | **[PREENCHER: link]** |
-
 | Vídeo com a inferência | **[PREENCHER: link]** |
-
 | Relatório técnico | [`docs/report.pdf`](docs/report.pdf) |
 
 ---
@@ -147,15 +128,10 @@ flowchart LR
 **Drone-Traffic**, do Roboflow Universe, licença **CC BY 4.0**: <https://universe.roboflow.com/kagglemtid/drone-traffic>. Todas as imagens (416 × 416) têm anotações de segmentação (polígonos); as caixas da detecção estão no formato YOLO.
 
 | Divisão | Imagens | `bicycle` | `bus` | `car` | `lorry` | Anotações | Anot./imagem |
-
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-
 | Treino | 950 | 796 | 859 | 9.410 | 3.164 | 14.229 | 15,0 |
-
 | Validação | 251 | 226 | 249 | 2.501 | 863 | 3.839 | 15,3 |
-
 | Teste | 118 | 101 | 116 | 1.100 | 380 | 1.697 | 14,4 |
-
 | **Total** | **1.319** | **1.123** | **1.224** | **13.011** | **4.407** | **19.765** | **15,0** |
 
 <div align="center">
@@ -175,27 +151,16 @@ flowchart LR
 ## Modelos
 
 | | 🟦 Detecção | 🟪 Segmentação |
-
 | --- | --- | --- |
-
 | Modelo | YOLO11n | YOLO11n-seg |
-
 | Pesos iniciais | `best.pt` do experimento `batch4_test` | pré-treinados (Ultralytics) |
-
 | Tamanho da imagem | 416 × 416 | 640 × 640 |
-
 | Épocas | 30 adicionais | 50 |
-
 | Batch | 4 | 4 |
-
 | Otimizador | automático (Ultralytics) | automático (Ultralytics) |
-
 | **Augmentation** | padrão do Ultralytics | padrão do Ultralytics |
-
 | Semente | 0 | 0 |
-
 | Hardware | NVIDIA GTX 1050 Ti (4 GB) | NVIDIA GTX 1050 Ti (4 GB) |
-
 | Experimento final | `results/detection/baseline-2/` | `results/segmentation/experiment_640/` |
 
 ```mermaid
@@ -236,13 +201,9 @@ Todas as métricas desta seção vêm do **conjunto de teste** (118 imagens, 1.6
 
 ### Métricas globais
 | Modelo | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 | IoU médio¹ |
-
 | --- | ---: | ---: | ---: | ---: | ---: |
-
 | 🟦 YOLO11n · detecção (caixas) | 0,9265 | 0,9143 | 0,9472 | 0,7599 | 0,9082 |
-
 | 🟪 YOLO11n-seg · caixas | 0,9913 | 0,9623 | 0,9880 | 0,8672 | n/d |
-
 | 🟪 YOLO11n-seg · máscaras | 0,9861 | 0,9573 | 0,9813 | 0,7250 | 0,8611 |
 
 <sub>¹ IoU complementar, calculado só sobre instâncias pareadas. Não substitui o mAP (detalhes abaixo).</sub>
@@ -325,19 +286,12 @@ flowchart TD
 ```
 
 | Classe | Detecção (caixas) | Segmentação (máscaras) |
-
 | --- | ---: | ---: |
-
 | `bicycle` | 0,7249 | 0,6822 |
-
 | `bus` | 0,9630 | 0,9222 |
-
 | `car` | 0,9107 | 0,8592 |
-
 | `lorry` | 0,9328 | 0,8955 |
-
 | Média simples | 0,8829 | 0,8398 |
-
 | **Média global** (ponderada pelas instâncias) | **0,9082** | **0,8611** |
 
 - Quase todas as anotações têm par: 1.690 de 1.697 (detecção) e 1.695 de 1.697 (segmentação).
@@ -364,17 +318,11 @@ flowchart TD
 > Estas matrizes foram geradas na **validação** (as colunas somam 226, 249, 2.501 e 863 instâncias), não no teste. Não são diretamente comparáveis com as métricas por classe da seção anterior.
 
 | Classe | Instâncias | Det. FN | Det. FP | Seg. FN | Seg. FP |
-
 | --- | ---: | ---: | ---: | ---: | ---: |
-
 | `bicycle` | 226 | 23 (10,2%) | 91 (54,8%) | 7 (3,1%) | 49 (45,4%) |
-
 | `bus` | 249 | 0 | 3 (1,8%) | 2 (0,8%) | 1 (0,9%) |
-
 | `car` | 2.501 | 66 (2,6%) | 44 (26,5%) | 42 (1,7%) | 42 (38,9%) |
-
 | `lorry` | 863 | 10 (1,2%) | 28 (16,9%) | 9 (1,0%) | 16 (14,8%) |
-
 | **Total** | 3.839 | **99** | **166** | **60** | **108** |
 
 <sub>FN: instâncias reais não detectadas (fração da classe). FP: detecções sem objeto correspondente (parcela do total de FP).</sub>
@@ -417,15 +365,10 @@ flowchart TD
 ## Inferência em vídeo
 
 | | Original | Processado |
-
 | --- | --- | --- |
-
 | Frames | 726 | 726 |
-
 | Duração | ≈ 30,28 s | ≈ 31,57 s |
-
 | Taxa de quadros | 23,98 FPS | 23 FPS |
-
 | Resolução | 1920 × 1080 | 1920 × 1080 |
 
 - Original: `videos/traffic_drone.mp4` · Processados: `results/video/`
@@ -493,17 +436,11 @@ yolo predict model=<pesos>.pt source=videos/traffic_drone.mp4 imgsz=640 save=Tru
 
 ### 4. Notebooks
 | Notebook | Conteúdo | Colab |
-
 | --- | --- | --- |
-
 | `01_dataset_eda.ipynb` | Análise exploratória | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/el-pitchula/AeroVision/blob/main/notebooks/01_dataset_eda.ipynb) |
-
 | `02_preprocessing.ipynb` | Preparação dos dados | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/el-pitchula/AeroVision/blob/main/notebooks/02_preprocessing.ipynb) |
-
 | `03_detection.ipynb` | Treino e avaliação da detecção | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/el-pitchula/AeroVision/blob/main/notebooks/03_detection.ipynb) |
-
 | `04_segmentation.ipynb` | Treino e avaliação da segmentação | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/el-pitchula/AeroVision/blob/main/notebooks/04_segmentation.ipynb) |
-
 | `05_video_tracking.ipynb` | Inferência em vídeo | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/el-pitchula/AeroVision/blob/main/notebooks/05_video_tracking.ipynb) |
 
 ### 5. Gerar o GIF de demonstração
